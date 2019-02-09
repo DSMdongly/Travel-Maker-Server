@@ -63,6 +63,13 @@ CREATE_SPEC = {
             'type': 'str',
             'required': False,
         },
+        {
+            'name': 'price',
+            'description': '여행 경비 (기본값 0원)',
+            'in': 'form',
+            'type': 'int',
+            'required': False,
+        },
     ],
     'responses':  {
         '200': {
@@ -78,6 +85,7 @@ CREATE_SPEC = {
                         'title': '김쌤과 함께 떠나는 포항 투어',
                         'description': '포왕 포왕@@',
                         'schdules': "[[\"숙소 휴식\", \"조개구이\", \"조개구이\"],[\"숙소 휴식\", \"조개구이\", \"조개구이\"],[\"숙소 휴식\", \'조개구이\", \"조개구이\"]]",
+                        'price': 100000,
                     }
                 }
             }
@@ -122,6 +130,18 @@ LIST_SPEC = {
             'type': 'str',
             'required': False,
         },
+        {
+            'name': 'price_range',
+            'description': '''
+                최대 2개까지 ',' 로 이어붙이기
+                여행 경비 가격대 쿼리 n원 대 n원 이상 m원 이하
+                'n': n원대
+                'n,m': n원 이상 n원 이하
+            ''',
+            'in': 'form',
+            'type': 'str',
+            'required': False,
+        },
     ],
     'responses':  {
         '200': {
@@ -138,6 +158,7 @@ LIST_SPEC = {
                             'title': '김쌤과 함께 떠나는 포항 투어',
                             'description': '포왕 포왕@@',
                             'schdules': "[[\"숙소 휴식\", \"조개구이\", \"조개구이\"],[\"숙소 휴식\", \"조개구이\", \"조개구이\"],[\"숙소 휴식\", \'조개구이\", \"조개구이\"]]",
+                            'price': 100000,
                         }
                     ]
                 }
@@ -219,6 +240,13 @@ UPDATE_SPEC = {
             'type': 'str',
             'required': False,
         },
+        {
+            'name': 'price',
+            'description': '여행 경비 (기본값 0원)',
+            'in': 'form',
+            'type': 'int',
+            'required': False,
+        },
     ],
     'responses':  {
         '200': {
@@ -234,6 +262,7 @@ UPDATE_SPEC = {
                         'title': '김쌤과 함께 떠나는 포항 투어~~',
                         'description': '포왕 포왕@@',
                         'schdules': "[[\"숙소 휴식\", \"조개구이\", \"조개구이\"],[\"숙소 휴식\", \"조개구이\", \"조개구이\"],[\"숙소 휴식\", \'조개구이\", \"조개구이\"]]",
+                        'price': 100000,
                     }
                 }
             }

@@ -32,6 +32,8 @@ def create():
     location = location and int(location)
     description = form.get('description')
     schedules = form.get('schedules')
+    price = form.get('price', 0)
+    price = price and int(price)
 
     plan = Plan(
         user_id=user_id,
@@ -39,7 +41,8 @@ def create():
         description=description,
         location=location,
         category=category,
-        schedules=schedules
+        schedules=schedules,
+        price=price,
     )
 
     plan.save()
@@ -56,6 +59,7 @@ def create():
                 'category': category,
                 'category_name': Plan.get_category_name(category),
                 'schedules': schedules,
+                'price': price,
             }
         )
     )
@@ -65,28 +69,32 @@ def create():
 @swag_from(LIST_SPEC)
 def list():
     args = request.args
+    plans = Plan.query
 
     title = args.get('title')
     category = args.get('category')
     location = args.get('location')
     user_id = args.get('user_id')
-
-    search_filter = {}
-    plans = Plan.query
+    price_range = args.get('price_range')
 
     if title:
         plans = plans.filter(Plan.title.like('%' + title + '%'))
-
     if category is not None:
-        search_filter['category'] = int(category)
+        plans = plans.filter_by(category=int(category))
     if location:
-        search_filter['location'] = int(location)
+        plans = plans.filter_by(location=int(location))
     if user_id:
-        search_filter['user_id'] = user_id
+        plans = plans.filter_by(user_id=user_id)
 
-    plans = plans.filter_by(
-        **search_filter
-    ).all()
+    if price_range:
+        price_ranges = price_range.split(',')
+        if len(price_ranges) == 1:
+            plans = plans.filter(Plan.price / int(price_ranges[0]) == 1)
+        if len(price_ranges) == 2:
+            plans = plans.filter(Plan.price >= int(price_ranges[0]))
+            plans = plans.filter(Plan.price <= int(price_ranges[1]))
+
+    plans = plans.order_by(Plan.id.desc()).all()
 
     return (
         jsonify(
@@ -109,6 +117,8 @@ def update():
     location = form.get('location')
     location = location and int(location)
     schedules = form.get('shcedules')
+    price = form.get('price', 0)
+    price = price and int(price)
 
     user_id = get_jwt_identity()
     user = User.find_by_id(user_id)
@@ -134,19 +144,21 @@ def update():
         category=category or plan.category,
         locatoin=location or plan.location,
         schedules=schedules or plan.schedules,
+        price=price or plan.price,
     )
 
     return jsonify(
         updated={
             'id': plan.id,
-            'title': title,
-            'user_id': user_id,
-            'description': description,
-            'location': location,
-            'location_name': Plan.get_location_name(location),
-            'category': category,
-            'category_name': Plan.get_category_name(category),
-            'schedules': schedules,
+            'title': plan.title,
+            'user_id': plan.user_id,
+            'description': plan.description,
+            'location': plan.location,
+            'location_name': Plan.get_location_name(plan.location),
+            'category': plan.category,
+            'category_name': Plan.get_category_name(plan.category),
+            'schedules': plan.schedules,
+            'price': plan.price,
         },
     )
 

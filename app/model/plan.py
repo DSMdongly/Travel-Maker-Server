@@ -4,6 +4,7 @@ from app.model import BaseModel, User
 
 class Plan(BaseModel):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    price = db.Column(db.Integer, nullable=False, default=0)
     user_id = db.Column(db.String(20), db.ForeignKey('user.id'), nullable=False)
     title = db.Column(db.String(60), nullable=False)
     description = db.Column(db.String(100), nullable=True)
