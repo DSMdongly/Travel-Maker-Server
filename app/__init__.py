@@ -1,13 +1,14 @@
 from app.doc import TEMPLATE
 from config import Config, ProdConfig, TestConfig
 from flask import Flask
-
+from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
 from flasgger import Swagger
 
 db = SQLAlchemy(session_options={'autoflush': False})
 jwt = JWTManager()
+cors = CORS()
 
 
 def create_app(config: Config):
@@ -16,6 +17,7 @@ def create_app(config: Config):
 
     db.init_app(app_)
     jwt.init_app(app_)
+    cors.init_app(app_)
 
     with app_.app_context():
         from app import model
