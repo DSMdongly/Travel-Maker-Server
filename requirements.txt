@@ -30,3 +30,4 @@ Werkzeug==0.14.1
 flask-cors==3.0.7
 gunicorn
 requests
+Pillow==5.4.1

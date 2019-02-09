@@ -54,9 +54,9 @@ CREATE_SPEC = {
                 JSON 2중 배열로
                 (n - 1) 번째 인덱스에 일정 이름을 저장한다.
                 [
-                    ['숙소 휴식', '조개구이', '조개구이']
-                    ['숙소 휴식', '조개구이', '조개구이']
-                    ['숙소 휴식', '조개구이', '조개구이']
+                    ['숙소 휴식', '조개구이', '조개구이'],
+                    ['숙소 휴식', '조개구이', '조개구이'],
+                    ['숙소 휴식', '조개구이', '조개구이'],
                 ]
             ''',
             'in': 'form',
@@ -66,6 +66,13 @@ CREATE_SPEC = {
         {
             'name': 'price',
             'description': '여행 경비 (기본값 0원)',
+            'in': 'form',
+            'type': 'int',
+            'required': False,
+        },
+        {
+            'name': 'image',
+            'description': '이미지 파일 (360 x 240)',
             'in': 'form',
             'type': 'int',
             'required': False,
@@ -93,6 +100,27 @@ CREATE_SPEC = {
     }
 }
 
+THUMBNAIL_SPEC = {
+    'tags': ['계획'],
+    'description': '계획 썸네일 이미지 조회 API, image src에 해당 api 호출 링크를 불러온다.',
+    'parameters': [
+        {
+            'name': 'plan_id',
+            'description': '수정할 계획의 id',
+            'in': 'form',
+            'type': 'int',
+            'required': True,
+        },
+    ],
+    'responses':  {
+        '200': {
+            'description': '성공, 썸네일 이미지',
+        },
+        '404': {
+            'description': '실패, 이미지가 존재하지 않음',
+        },
+    }
+}
 
 LIST_SPEC = {
     'tags': ['계획'],
@@ -243,6 +271,13 @@ UPDATE_SPEC = {
         {
             'name': 'price',
             'description': '여행 경비 (기본값 0원)',
+            'in': 'form',
+            'type': 'int',
+            'required': False,
+        },
+        {
+            'name': 'image',
+            'description': '이미지 파일 (360 x 240)',
             'in': 'form',
             'type': 'int',
             'required': False,

@@ -1,11 +1,11 @@
-from app.doc.plan import CREATE_SPEC, UPDATE_SPEC, LIST_SPEC, DELETE_SPEC
+from app.doc.plan import CREATE_SPEC, UPDATE_SPEC, THUMBNAIL_SPEC, LIST_SPEC, DELETE_SPEC
 from app.model import User, Plan
 
-from flask import abort, Blueprint, request, jsonify
+from flask import abort, Blueprint, request, jsonify, send_file, Response
 from flask_jwt_extended import *
-
 from flasgger import swag_from
-
+import os
+from PIL import Image
 
 api = Blueprint(__name__, 'place_api')
 
@@ -34,6 +34,7 @@ def create():
     schedules = form.get('schedules')
     price = form.get('price', 0)
     price = price and int(price)
+    image = files.get('image')
 
     plan = Plan(
         user_id=user_id,
@@ -46,6 +47,9 @@ def create():
     )
 
     plan.save()
+
+    if image:
+        _upload_thumbnail_image(plan, image)
 
     return (
         jsonify(
@@ -62,6 +66,35 @@ def create():
                 'price': price,
             }
         )
+    )
+
+
+def _upload_thumbnail_image(plan, image_file):
+    image = Image.open(image_file.stream)
+    image.thumbnail((360, 240))
+
+    image_path = os.path.join(
+        os.path.dirname(__file__),
+        '../files/plan_{}_thumbnail.png'.format(plan.id),
+    )
+
+    image.save(image_path)
+    plan.update(image_url=image_path)
+
+
+@api.route('/plan/thumbnail', methods=['GET'])
+@swag_from(THUMBNAIL_SPEC)
+def thumbnail():
+    args = request.args
+
+    plan_id = args.get('plan_id')
+    plan = Plan.find_by_id(plan_id)
+
+    if not (plan and plan.image_url):
+        return abort(404)
+
+    return send_file(
+        plan.image_url,
     )
 
 
@@ -110,6 +143,7 @@ def list():
 @jwt_required
 def update():
     form = request.form
+    files = request.files
 
     title = form.get('title')
     description = form.get('description')
@@ -119,6 +153,7 @@ def update():
     schedules = form.get('shcedules')
     price = form.get('price', 0)
     price = price and int(price)
+    image = files.get('image')
 
     user_id = get_jwt_identity()
     user = User.find_by_id(user_id)
@@ -146,6 +181,9 @@ def update():
         schedules=schedules or plan.schedules,
         price=price or plan.price,
     )
+
+    if image:
+        _upload_thumbnail_image(plan, image)
 
     return jsonify(
         updated={
