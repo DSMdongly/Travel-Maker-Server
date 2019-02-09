@@ -9,7 +9,7 @@ class Config:
     PORT = os.getenv("PORT", 5000)
     SECRET_KEY = os.getenv("SECRET_KEY", "PLEASE SET YOUR SECRET KEY")
 
-    JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=1)
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=7)
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=30)
     JWT_HEADER_TYPE = "JWT"
 

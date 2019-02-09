@@ -5,9 +5,10 @@ from ..model import BaseModel
 class User(BaseModel):
     id = db.Column(db.String(20), primary_key=True, nullable=False)
     password = db.Column(db.String(30), nullable=False)
-    phone = db.Column(db.String(10), nullable=True)
+    phone = db.Column(db.String(50), nullable=True)
     email = db.Column(db.String(100), nullable=True)
     name = db.Column(db.String(20), nullable=False)
+    keywords = db.Column(db.Text, nullable=True)
     description = db.Column(db.String(100), nullable=True)
 
     @classmethod

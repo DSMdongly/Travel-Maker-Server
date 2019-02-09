@@ -12,8 +12,14 @@ class Router:
             self.init_app(app)
 
     def init_app(self, app):
-        from ..view import account
+        from app.view import account
         app.register_blueprint(account.api)
+
+        from app.view import plan
+        app.register_blueprint(plan.api)
+
+        from app.view import user
+        app.register_blueprint(user.api)
 
 
 def json_required(required_keys):

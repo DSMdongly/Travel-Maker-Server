@@ -27,8 +27,8 @@ def local_auth():
         )
 
     return jsonify(
-        access_token=create_access_token(identity=user.id),
-        refresh_token=create_refresh_token(identity=user.id),
+        access_token=create_access_token(identity=id),
+        refresh_token=create_refresh_token(identity=id),
     )
 
 
@@ -108,8 +108,8 @@ def register():
 
     return (
         jsonify(
-            access_token=create_access_token(identity=user.id),
-            refresh_token=create_refresh_token(identity=user.id),
+            access_token=create_access_token(identity=id),
+            refresh_token=create_refresh_token(identity=id),
         ), 201
     )
 

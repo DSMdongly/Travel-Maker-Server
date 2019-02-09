@@ -107,14 +107,14 @@ AUTH_SOCIAL_SPEC = {
             'description': '로그인 방식: 기본값 facebook, (페북: facebook)',
             'in': 'form',
             'type': 'str',
-            'required': False,
+            'required': True,
         },
         {
             'name': 'social_api_token',
             'description': '소셜 가입시 필요한 토큰',
             'in': 'form',
             'type': 'str',
-            'required': False,
+            'required': True,
         },
     ],
     'responses':  {

@@ -26,4 +26,3 @@ class BaseModel(db.Model):
 
 from app.model.user import *
 from app.model.plan import *
-from app.model.place import *

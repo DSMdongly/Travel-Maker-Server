@@ -19,8 +19,6 @@ def create_app(config: Config):
 
     with app_.app_context():
         from app import model
-        # if config is not ProdConfig:
-        #     db.drop_all()
         db.create_all()
 
     from app.view import Router
