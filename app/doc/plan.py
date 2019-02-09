@@ -98,13 +98,6 @@ LIST_SPEC = {
             'required': False,
         },
         {
-            'name': 'description',
-            'description': '소개',
-            'in': 'query',
-            'type': 'str',
-            'required': False,
-        },
-        {
             'name': 'category',
             'description': '''
                 카테고리 (0: 기타, 1: 산, 2: 바다, 3: 계곡, 

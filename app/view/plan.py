@@ -72,9 +72,11 @@ def list():
     user_id = args.get('user_id')
 
     search_filter = {}
+    plans = Plan.query
 
     if title:
-        search_filter['title'] = title
+        plans = plans.filter(Plan.title.like('%' + title + '%'))
+
     if category is not None:
         search_filter['category'] = int(category)
     if location:
@@ -82,7 +84,7 @@ def list():
     if user_id:
         search_filter['user_id'] = user_id
 
-    plans = Plan.query.filter_by(
+    plans = plans.filter_by(
         **search_filter
     ).all()
 
